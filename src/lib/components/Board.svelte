@@ -76,13 +76,24 @@
 				return 'btn-filled-tertiary'
 		}
 	}
+
+	function chinese(name: string) {
+		switch (name) {
+			case BoardName.CONCEPT:
+				return '概念'
+			case BoardName.FACT:
+				return '事實'
+			case BoardName.APPLICATION:
+				return '應用'
+		}
+	}
 </script>
 
 <section class="relative h-[90vh] max-h-full min-h-[90vh] p-2 sm:grid sm:grid-cols-3">
 	{#each columnItems as column (column.id)}
 		<div class="card-glass rounded-container-token h-[33%] sm:h-full">
 			<h1 class="absolute text-4xl px-4 py-2 bottom-0 right-0 text-surface-400-500-token">
-				{column.name}
+				{`${chinese(column.name)} ${column.name}`}
 			</h1>
 
 			<div
