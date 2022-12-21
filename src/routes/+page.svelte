@@ -10,6 +10,7 @@
 	$: sheet = liveQuery(() => (browser ? db.sheet.get({ id: SheetID.INITIAL }) : {}))
 	$: sheetValue = $sheet as Sheet
 	$: boards = sheetValue?.boards
+	$: notEmpty = boards?.map((b) => b.items.length).reduce((a, b) => a + b, 0) > 0
 
 	function triggerAddPrompt(): void {
 		const prompt: ModalSettings = {
@@ -62,7 +63,9 @@
 
 	<div>
 		<button class="btn-icon" on:click={triggerAddPrompt}>+</button>
-		<button class="btn-icon" on:click={triggerResetPrompt}>🧹</button>
+		{#if notEmpty}
+			<button class="btn-icon" on:click={triggerResetPrompt}>🧹</button>
+		{/if}
 	</div>
 
 	<GradientHeading tag="h1" direction="bg-gradient-to-r" from="from-primary-300" to="to-accent-200"
