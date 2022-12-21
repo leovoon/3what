@@ -62,6 +62,10 @@
 					"name": "conventionalcommits",
 					"types": [
 						{
+							"type": "update",
+							"section": "Updates"
+						},
+						{
 							"type": "feat",
 							"section": "Features"
 						},
