@@ -1,0 +1,101 @@
+{
+	"name": "3what",
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"lint": "prettier --plugin-search-dir . --check . && eslint .",
+		"format": "prettier --plugin-search-dir . --write .",
+		"release": "release-it"
+	},
+	"devDependencies": {
+		"@skeletonlabs/skeleton": "^0.80.9",
+		"@sveltejs/adapter-vercel": "next",
+		"@sveltejs/kit": "^1.0.0",
+		"@typescript-eslint/eslint-plugin": "^5.45.0",
+		"@typescript-eslint/parser": "^5.45.0",
+		"autoprefixer": "^10.4.7",
+		"eslint": "^8.28.0",
+		"eslint-config-prettier": "^8.5.0",
+		"eslint-plugin-svelte3": "^4.0.0",
+		"postcss": "^8.4.14",
+		"postcss-load-config": "^4.0.1",
+		"prettier": "^2.8.0",
+		"prettier-plugin-svelte": "^2.8.1",
+		"prettier-plugin-tailwindcss": "^0.2.1",
+		"svelte": "^3.54.0",
+		"svelte-check": "^2.9.2",
+		"svelte-dnd-action": "^0.9.22",
+		"svelte-preprocess": "^4.10.7",
+		"tailwindcss": "^3.1.5",
+		"tslib": "^2.4.1",
+		"typescript": "^4.9.3",
+		"vite": "^4.0.0"
+	},
+	"type": "module",
+	"dependencies": {
+		"dexie": "^3.2.2",
+		"nanoid": "^4.0.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/leovoon/3what.git"
+	},
+	"release-it": {
+		"git": {
+			"commitMessage": "chore: release ${version}"
+		},
+		"github": {
+			"release": true,
+			"releaseName": "Release v${version}",
+			"host": "github.com"
+		},
+		"npm": {
+			"publish": false
+		},
+		"plugins": {
+			"@release-it/conventional-changelog": {
+				"infile": "CHANGELOG.md",
+				"preset": {
+					"name": "conventionalcommits",
+					"types": [
+						{
+							"type": "feat",
+							"section": "Features"
+						},
+						{
+							"type": "fix",
+							"section": "Bug Fixes"
+						},
+						{
+							"type": "chore",
+							"hidden": true
+						},
+						{
+							"type": "docs",
+							"section": "Documentation"
+						},
+						{
+							"type": "style",
+							"section": "Styles"
+						},
+						{
+							"type": "refactor",
+							"hidden": true
+						},
+						{
+							"type": "perf",
+							"hidden": true
+						},
+						{
+							"type": "test",
+							"hidden": true
+						}
+					]
+				}
+			}
+		}
+	}
+}
