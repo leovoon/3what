@@ -8,7 +8,8 @@ export const enum BoardName {
 }
 
 export const enum SheetID {
-	INITIAL = 'initial'
+	INITIAL = 'initial',
+	SHARED = 'shared'
 }
 
 export type WhatTodo = {

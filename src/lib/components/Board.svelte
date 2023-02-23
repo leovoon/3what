@@ -2,12 +2,12 @@
 	import { flip } from 'svelte/animate'
 	import { dndzone } from 'svelte-dnd-action'
 	import type { ModalSettings } from '@skeletonlabs/skeleton/utilities/Modal/types'
-	import { db, SheetID, BoardName, type TBoard, type WhatTodo } from '$lib/db'
+	import { db, BoardName, type TBoard, type WhatTodo } from '$lib/db'
 	import { modalStore } from '@skeletonlabs/skeleton/utilities/Modal/stores'
-	import { invalidateAll } from '$app/navigation'
 	import { browser } from '$app/environment'
 
 	export let columnItems: TBoard[]
+	export let id: string
 
 	const flipDurationMs = 300
 
@@ -33,7 +33,7 @@
 		if (browser)
 			db.sheet
 				.where('id')
-				.equals(SheetID.INITIAL)
+				.equals(id)
 				.modify((sheet) => {
 					sheet.boards = items
 				})
@@ -50,7 +50,7 @@
 				if (!r) return
 				const res = db.sheet
 					.where('id')
-					.equals(SheetID.INITIAL)
+					.equals(id)
 					.modify((sheet) => {
 						sheet.boards.forEach((board) => {
 							board.items.forEach((item) => {
