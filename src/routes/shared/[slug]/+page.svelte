@@ -10,7 +10,11 @@
 
 	export let data: PageData
 
-	const sheetStore = liveQuery(() => (browser ? db.sheet.get({ id: SheetID.SHARED }) : undefined))
+	let sheetStore
+
+	if (browser) {
+		sheetStore = liveQuery(() => (browser ? db.sheet.get({ id: SheetID.SHARED }) : undefined))
+	}
 
 	onMount(() => {
 		const sharedSheet: Sheet = JSON.parse(
