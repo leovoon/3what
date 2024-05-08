@@ -1,19 +1,19 @@
 <script lang="ts">
-	import '@skeletonlabs/skeleton/themes/theme-hamlindigo.css'
-	import '@skeletonlabs/skeleton/styles/all.css'
-
-	import '../app.postcss'
+	import '../app.css'
 	import { nanoid } from 'nanoid/non-secure'
 	import lz from 'lz-string'
-	import { modalStore } from '@skeletonlabs/skeleton'
+	import { getModalStore, initializeStores } from '@skeletonlabs/skeleton'
 	import { db, seedData, SheetID, type Sheet } from '$lib/db'
 	import { browser } from '$app/environment'
-	import { GradientHeading, LightSwitch, Modal, type ModalSettings } from '@skeletonlabs/skeleton'
+	import { LightSwitch, Modal, type ModalSettings } from '@skeletonlabs/skeleton'
 	import type { LayoutData } from './$types'
 	import { page } from '$app/stores'
 	import { goto } from '$app/navigation'
 
 	export let data: LayoutData
+
+	initializeStores()
+	const modalStore = getModalStore()
 
 	$: sheet = data.sheet
 	$: sheetValue = $sheet as Sheet
@@ -108,9 +108,11 @@
 	<div>
 		<button class="btn-icon" on:click={triggerAddPrompt}>+</button>
 		{#if notEmpty}
-			<button class="btn btn-sm bg-warning-300" on:click={triggerResetPrompt}>Clear</button>
+			<button class="btn btn-sm bg-warning-300 text-base-token" on:click={triggerResetPrompt}
+				>Clear</button
+			>
 			<button
-				class="btn btn-sm bg-primary-300"
+				class="btn btn-sm bg-primary-300 text-base-token"
 				on:click={!notEmpty ? triggerAlertEmpty : triggerShare}
 			>
 				<span>↗️ Share </span>
@@ -118,20 +120,18 @@
 		{/if}
 	</div>
 	<button on:click={() => goto('/')}>
-		<GradientHeading
-			tag="h1"
-			direction="bg-gradient-to-r"
-			from="from-primary-300"
-			to="to-accent-200"
-		>
-			3what
-		</GradientHeading>
+		<h1 class="h1">
+			<span
+				class="to-accent-500 bg-gradient-to-r from-primary-500 box-decoration-clone bg-clip-text text-transparent"
+				>3what</span
+			>
+		</h1>
 	</button>
 </header>
 <main>
 	<slot />
 </main>
-<footer class="absolute text-accent-600-300-token bottom-0 text-xs p-1">
+<footer class="text-accent-600-300-token absolute bottom-0 p-1 text-xs">
 	by
 	<a href="https://github.com/leovoon/3what"> leovoon</a>
 </footer>

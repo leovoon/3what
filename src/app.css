@@ -1,3 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind variants;
+
 * {
 	scrollbar-width: thin;
 	-webkit-overflow-scrolling: touch;
