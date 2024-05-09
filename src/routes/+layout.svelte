@@ -3,31 +3,43 @@
 	import { nanoid } from 'nanoid/non-secure'
 	import lz from 'lz-string'
 	import { getModalStore, initializeStores } from '@skeletonlabs/skeleton'
-	import { db, seedData, SheetID, type Sheet } from '$lib/db'
+	import { db, seedData, SheetID, type Sheet, type TBoard } from '$lib/db'
 	import { browser } from '$app/environment'
 	import { LightSwitch, Modal, type ModalSettings } from '@skeletonlabs/skeleton'
 	import type { LayoutData } from './$types'
 	import { page } from '$app/stores'
 	import { goto } from '$app/navigation'
 
-	export let data: LayoutData
+	interface Props { data: LayoutData, children: any }
 
-	initializeStores()
-	const modalStore = getModalStore()
+	let { data, children }: Props = $props();
 
-	$: sheet = data.sheet
-	$: sheetValue = $sheet as Sheet
-	$: boards = sheetValue?.boards
-	$: isPreview = $page.url.pathname.includes('shared')
-	$: notEmpty = boards?.map((b) => b.items.length).reduce((a, b) => a + b, 0) > 0 || isPreview
-	$: idByMode = isPreview ? SheetID.SHARED : SheetID.INITIAL
-	$: encodedURI = lz.compressToEncodedURIComponent(
+	let sheet = $state(data.sheet)
+	let sheetValue = $derived($sheet)
+	let boards = $derived(sheetValue?.boards)
+	let isPreview = $derived($page.url.pathname.includes('shared'))
+
+	function checkItemsNotEmpty(data: TBoard[]) {
+    for (let item of data) {
+        if (item.items.length > 0) {
+            return true;
+        }
+    }
+    return false;
+}
+	let notEmpty = $derived(checkItemsNotEmpty(boards ?? []))
+	let idByMode = $derived(isPreview ? SheetID.SHARED : SheetID.INITIAL)
+	let encodedURI = $derived(lz.compressToEncodedURIComponent(
 		JSON.stringify({
 			id: SheetID.SHARED,
 			name: 'Shared 3board @' + new Date().toLocaleString(),
 			boards: boards
 		})
-	)
+	))
+
+		
+	initializeStores()
+	const modalStore = getModalStore()
 
 	function triggerAddPrompt(): void {
 		const prompt: ModalSettings = {
@@ -98,13 +110,14 @@
 		}
 		if (browser) modalStore.trigger(prompt)
 	}
+	$inspect(boards); // will console.log when `count` or `message` change
+
 </script>
 
 <Modal />
 
 <header class="flex items-center justify-between p-2">
 	<LightSwitch />
-
 	<div>
 		<button class="btn-icon" on:click={triggerAddPrompt}>+</button>
 		{#if notEmpty}
@@ -129,7 +142,7 @@
 	</button>
 </header>
 <main>
-	<slot />
+	{@render children()}
 </main>
 <footer class="text-accent-600-300-token absolute bottom-0 p-1 text-xs">
 	by

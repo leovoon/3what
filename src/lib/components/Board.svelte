@@ -5,17 +5,16 @@
 	import { getModalStore, type ModalSettings } from '@skeletonlabs/skeleton'
 	import { browser } from '$app/environment'
 
-	export let columnItems: TBoard[]
-	export let id: string
+	interface Props {
+		columnItems: TBoard[]
+		id: string
+	}
+
+	let { columnItems, id }: Props = $props()
+
 	const modalStore = getModalStore()
 	const flipDurationMs = 300
 
-	function handleDndConsiderColumns(e: CustomEvent<DndEvent>) {
-		columnItems = e.detail.items
-	}
-	function handleDndFinalizeColumns(e: CustomEvent<DndEvent>) {
-		columnItems = e.detail.items
-	}
 	function handleDndConsiderCards(cid: number, e: CustomEvent<DndEvent>) {
 		const colIdx = columnItems.findIndex((c) => c.id === cid)
 		columnItems[colIdx].items = e.detail.items
@@ -68,11 +67,11 @@
 	function colorBasedOnColumn(columName: string) {
 		switch (columName) {
 			case BoardName.CONCEPT:
-				return 'btn-filled-primary'
+				return 'variant-filled-primary'
 			case BoardName.FACT:
-				return 'btn-filled-accent'
+				return 'variant-filled-secondary'
 			case BoardName.APPLICATION:
-				return 'btn-filled-tertiary'
+				return 'variant-filled-tertiary'
 		}
 	}
 
@@ -90,7 +89,7 @@
 
 <section class="relative h-[90vh] max-h-full min-h-[90vh] p-2 sm:grid sm:grid-cols-3">
 	{#each columnItems as column (column.id)}
-		<div class="card-glass relative h-[33%] border-primary-300 rounded-container-token sm:h-full">
+		<div class="card-glass relative h-[33%] rounded-container-token sm:h-full">
 			<h1 class="text-surface-400-500-token absolute bottom-0 right-0 px-4 py-2 text-4xl">
 				{`${chinese(column.name)} ${column.name}`}
 			</h1>

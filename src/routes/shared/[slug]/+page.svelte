@@ -4,13 +4,16 @@
 	import Board from '$lib/components/Board.svelte'
 	import { db, SheetID, type Sheet } from '$lib/db'
 	import { browser } from '$app/environment'
-	import { liveQuery } from 'dexie'
+	import { liveQuery, type Observable } from 'dexie'
 	import LoadingBoard from '$lib/components/LoadingBoard.svelte'
 	import { onMount } from 'svelte'
 
-	export let data: PageData
+	interface Props {
+		data: PageData
+	}
+	let { data }: Props = $props()
 
-	let sheetStore
+	let sheetStore: Observable<Sheet | undefined>
 
 	if (browser) {
 		sheetStore = liveQuery(() => (browser ? db.sheet.get({ id: SheetID.SHARED }) : undefined))
@@ -39,8 +42,7 @@
 				})
 		}
 	})
-
-	$: sheet = $sheetStore as Sheet
+	let sheet = $derived($sheetStore)
 </script>
 
 {#if sheet}
